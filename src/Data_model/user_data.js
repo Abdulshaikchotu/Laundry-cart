@@ -7,7 +7,9 @@ const user_details = new mongoose.Schema({
     district: { type: String, required: true },
     address: { type: String, required: true },
     pincode: { type: Number, required: true },
-    password: { type: String, required: true }
+    password: { type: String, required: true },
+    orders:{type:Array, require:false}
+
 })
 
 const Data = mongoose.model('UserData', user_details);

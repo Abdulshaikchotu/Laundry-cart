@@ -4,11 +4,10 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 
 let reg_log_app = express.Router();
-reg_log_app.use(bodyParser.json());
 reg_log_app.post('/register', async (req, res) => {
     try {
-        
-        const { name,email,phone,state,district,address,pincode, password } = req.body;
+        console.log(req.body)
+        const { name, email, phone, state, district, address, pincode, password } = req.body;
         const user = await Data.findOne({ email });
         const user_mobile = await Data.findOne({ phone });
         if (user && user_mobile) {
@@ -17,17 +16,17 @@ reg_log_app.post('/register', async (req, res) => {
                 massage: "User Already exists with given email"
             })
         }
-         await Data.create(req.body,function(err,resolve){
-            if(err){console.log(err)}
-            else{
+        await Data.create(req.body, function (err, resolve) {
+            if (err) { console.log(err) }
+            else {
                 res.status(200).json({
                     status: "Success",
                     massage: "User succesfully register"
                 })
             }
         });
-        
-        
+
+
     }
     catch (e) {
         res.json({
@@ -40,9 +39,15 @@ reg_log_app.post('/register', async (req, res) => {
 });
 
 reg_log_app.post('/login', async (req, res) => {
+
     try {
-        const { email, password } = req.body;
-        const user = await Data.findOne({ email });
+        let user;
+        if (typeof (req.body.email) === Number) {
+            user = await Data.findOne({ phone: req.body.email });
+        }
+        else {
+            user = await Data.findOne({ email: req.body.email });
+        }
 
         if (!user) {
             return res.status(400).json({
