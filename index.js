@@ -4,9 +4,11 @@ const cors = require('cors')
 const bodyParser = require('body-parser');
 const reg_route = require('./src/register_user/reg_route')
 const valid_route = require('./src/successfullReg/after_login');
-const jwt = require('jsonwebtoken');
-const port = process.env.port || 5000;
-const MongoDBURl = process.env.MongoDbUrl || 'mongodb://localhost/UserData'
+const jwt = require("jsonwebtoken")
+const dotenv=require("dotenv")
+dotenv.config()
+const port = process.env.port 
+const MongoDBURl = process.env.MongoDbUrl
 
 
 const app = express();
@@ -22,7 +24,7 @@ app.use('/successfulLogin', async (req, res, next) => {
     const token = req.headers.authorization;
 
     if (token) {
-        jwt.verify(token, 'DIDBYANOOP', function (err, decoded) {
+        jwt.verify(token, 'Abdul', function (err, decoded) {
             if (err) {
 
                 return res.json({
